@@ -201,7 +201,7 @@ namespace Dynamo.UI.Controls
                 return;
 
             var focusedMemberButton = Keyboard.FocusedElement as ListBoxItem;
-            var focusedButtonContent = focusedMemberButton.Content as BrowserInternalElement;
+            var focusedButtonContent = focusedMemberButton.Content as NodeSearchElementViewModel;
 
             bool hasPrimaryMembers = primaryMembers.Items.Count > 0;
             bool hasSecondaryMembers = secondaryMembers.Items.Count > 0;

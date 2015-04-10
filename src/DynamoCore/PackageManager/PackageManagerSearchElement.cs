@@ -8,13 +8,14 @@ using Dynamo.Search.SearchElements;
 using Dynamo.Utilities;
 
 using Greg.Responses;
+using Dynamo.Core;
 
 namespace Dynamo.PackageManager
 {
 
     /// <summary>
     /// A search element representing an element from the package manager </summary>
-    public class PackageManagerSearchElement : SearchElementBase
+    public class PackageManagerSearchElement : NotificationObject
     {
 
         #region Properties
@@ -43,28 +44,28 @@ namespace Dynamo.PackageManager
         /// Type property </summary>
         /// <value>
         /// A string describing the type of object </value>
-        public override string Type { get { return "Community Node"; } }
+        public string Type { get { return "Community Node"; } }
 
         /// <summary>
         /// Name property </summary>
         /// <value>
         /// The name of the node </value>
-        public override string Name { get { return Header.name; } }
+        public string Name { get { return Header.name; } }
 
         /// <summary>
         /// Description property </summary>
         /// <value>
         /// A string describing what the node does</value>
-        public override string Description { get { return Header.description ?? ""; } }
+        public string Description { get { return Header.description ?? ""; } }
 
         /// <summary>
         /// Weight property </summary>
         /// <value>
         /// Number defining the relative importance of the element in search. 
         /// Higher = closer to the top of search results </value>
-        public override double Weight { get; set; }
+        public double Weight { get; set; }
 
-        public override bool Searchable { get { return true; } }
+        public bool Searchable { get { return true; } }
 
         /// <summary>
         /// Guid property </summary>
@@ -78,7 +79,9 @@ namespace Dynamo.PackageManager
         /// A string that uniquely defines the Package on the server  </value>
         public string Id { get { return Header._id; } }
 
-        public override string Keywords { get; set; }
+        public string Keywords { get; set; }
+
+        public bool IsExpanded { get; set; }
 
         public string SiteUrl { get { return Header.site_url; } }
         public string RepositoryUrl { get { return Header.repository_url; } }
@@ -94,7 +97,6 @@ namespace Dynamo.PackageManager
         {
             this.client = client;
 
-            this.IsExpanded = false;
             this.Header = header;
             this.Weight = header.deprecated ? 0.1 : 1;
 
