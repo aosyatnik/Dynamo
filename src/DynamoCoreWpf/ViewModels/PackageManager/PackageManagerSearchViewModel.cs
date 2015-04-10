@@ -749,7 +749,7 @@ namespace Dynamo.PackageManager
             if (SearchResults.Count <= SelectedIndex)
                 return;
 
-            SearchResults[SelectedIndex].Model.Execute();
+            //SearchResults[SelectedIndex].Model.Execute();
         }
         
     }

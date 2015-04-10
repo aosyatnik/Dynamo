@@ -12,7 +12,7 @@ using Microsoft.Practices.Prism.Commands;
 
 namespace Dynamo.PackageManager.ViewModels
 {
-    public class PackageManagerSearchElementViewModel : BrowserItemViewModel
+    public class PackageManagerSearchElementViewModel
     {
         public ICommand DownloadLatestCommand { get; set; }
         public ICommand UpvoteCommand { get; set; }
@@ -22,11 +22,10 @@ namespace Dynamo.PackageManager.ViewModels
 
         public new PackageManagerSearchElement Model { get; private set; }
 
-        public PackageManagerSearchElementViewModel(PackageManagerSearchElement element) : base(element)
+        public PackageManagerSearchElementViewModel(PackageManagerSearchElement element)
         {
             this.Model = element;
 
-            this.ToggleIsExpandedCommand = new DelegateCommand(() => this.Model.IsExpanded = !this.Model.IsExpanded );
             this.DownloadLatestCommand = new DelegateCommand(() => OnRequestDownload(Model.Header.versions.Last()));
             this.UpvoteCommand = new DelegateCommand((Action)Model.Upvote, Model.CanUpvote);
             this.DownvoteCommand = new DelegateCommand((Action)Model.Downvote, Model.CanDownvote);
