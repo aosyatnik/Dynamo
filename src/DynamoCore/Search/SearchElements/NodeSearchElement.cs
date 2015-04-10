@@ -211,6 +211,12 @@ namespace Dynamo.Search.SearchElements
             }
         }
 
+        public ElementTypeEnum ElementType
+        {
+            get;
+            protected set;
+        }
+
         /// <summary>
         ///     Event fired when this search element produces a new NodeModel. This typically
         ///     happens when it is selected in the library by the user.

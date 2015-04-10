@@ -89,6 +89,7 @@ namespace Dynamo.Wpf.ViewModels
         bool IsSelected { get; }
         string Description { get; }
         ICommand ClickedCommand { get; }
+        ElementTypeEnum ElementType { get; }
     }
 
     public class NodeCategoryViewModel : NotificationObject, ISearchEntryViewModel
@@ -149,6 +150,22 @@ namespace Dynamo.Wpf.ViewModels
             {
                 if (!string.IsNullOrEmpty(assembly)) return;
                 assembly = value;
+            }
+        }
+
+        public ElementTypeEnum ElementType
+        {
+            get
+            {
+                if (entries.All(entry => entry.ElementType == ElementTypeEnum.Package) &&
+                    subCategories.All(subCategory => subCategory.ElementType == ElementTypeEnum.Package))
+                    return ElementTypeEnum.Package;
+                else
+                    if (entries.All(entry => entry.ElementType == ElementTypeEnum.CustomDll) &&
+                        subCategories.All(subCategory => subCategory.ElementType == ElementTypeEnum.CustomDll))
+                        return ElementTypeEnum.CustomDll;
+                    else
+                        return ElementTypeEnum.RegularCategory;
             }
         }
 

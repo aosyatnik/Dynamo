@@ -289,10 +289,10 @@ namespace Dynamo.Core
         ///     Flag specifying whether or not this should operate in "test mode".
         /// </param>
         /// <returns></returns>
-        public IEnumerable<CustomNodeInfo> AddUninitializedCustomNodesInPath(string path, bool isTestMode)
+        public IEnumerable<CustomNodeInfo> AddUninitializedCustomNodesInPath(string path, bool isTestMode, bool isPackageMember = false)
         {
             var result = new List<CustomNodeInfo>();
-            foreach (var info in ScanNodeHeadersInDirectory(path, isTestMode))
+            foreach (var info in ScanNodeHeadersInDirectory(path, isTestMode, isPackageMember))
             {
                 SetNodeInfo(info);
                 result.Add(info);
@@ -305,7 +305,7 @@ namespace Dynamo.Core
         ///     Does not instantiate the nodes.
         /// </summary>
         /// <returns>False if SearchPath is not a valid directory, otherwise true</returns>
-        private IEnumerable<CustomNodeInfo> ScanNodeHeadersInDirectory(string dir, bool isTestMode)
+        private IEnumerable<CustomNodeInfo> ScanNodeHeadersInDirectory(string dir, bool isTestMode, bool isPackageMember)
         {
             if (!Directory.Exists(dir))
                 yield break;
@@ -314,7 +314,10 @@ namespace Dynamo.Core
             {
                 CustomNodeInfo info;
                 if (TryGetInfoFromPath(file, isTestMode, out info))
+                {
+                    info.IsPackageMember = isPackageMember;
                     yield return info;
+                }
             }
         }
 

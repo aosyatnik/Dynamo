@@ -17,7 +17,7 @@ namespace Dynamo.Search.SearchElements
         /// The name that is used during node creation
         /// </summary>
         public override string CreationName { get { return functionDescriptor != null ? functionDescriptor.MangledName : this.Name; } }
-        
+
         public ZeroTouchSearchElement(FunctionDescriptor functionDescriptor)
         {
             this.functionDescriptor = functionDescriptor;
@@ -30,6 +30,16 @@ namespace Dynamo.Search.SearchElements
             FullCategoryName = functionDescriptor.Category;
             Description = functionDescriptor.Description;
             Assembly = functionDescriptor.Assembly;
+            if (functionDescriptor.IsBuiltIn)
+                ElementType = ElementTypeEnum.RegularNode;
+            else
+            {
+                // Assembly, that is located in package directory, considered as part of package.
+                if (Assembly.StartsWith(functionDescriptor.PathManager.PackagesDirectory))
+                    ElementType = ElementTypeEnum.Package;
+                else
+                    ElementType = ElementTypeEnum.CustomDll;
+            }
 
             inputParameters = new List<Tuple<string, string>>(functionDescriptor.InputParameters);
             outputParameters = new List<string>() { functionDescriptor.ReturnType };
