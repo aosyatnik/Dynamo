@@ -73,6 +73,7 @@
     <SolidColorBrush x:Key="LibraryMemberOnHover" Color="#404040" />
     <SolidColorBrush x:Key="LibraryItemHostBackground" Color="#353535" />
     <SolidColorBrush x:Key="RootElementBackground" Color="#282828" />
+    <SolidColorBrush x:Key="RootElementOnHover" Color="#2F2F2F" />
 
     <!-- Library text colors-->
     <SolidColorBrush x:Key="MemberButtonText" Color="#aaaaaa" />
