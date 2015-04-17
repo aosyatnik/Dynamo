@@ -15,24 +15,8 @@
                 <ui:SharedResourceDictionary Source="{x:Static ui:SharedDictionaryManager.DynamoModernDictionaryUri}" />
                 <ui:SharedResourceDictionary Source="{x:Static ui:SharedDictionaryManager.MenuStyleDictionaryUri}" />
                 <ui:SharedResourceDictionary Source="{x:Static ui:SharedDictionaryManager.SidebarGridDictionaryUri}" />
+                <ui:SharedResourceDictionary Source="{x:Static ui:SharedDictionaryManager.DynamoConvertersDictionaryUri}" />
             </ResourceDictionary.MergedDictionaries>
-
-            <!-- Region Converters -->
-
-            <!--Converter to Make class details not focusable-->
-            <controls:ElementTypeToBoolConverter x:Key="ElementTypeToBoolConverter" />
-            <controls:FullyQualifiedNameToDisplayConverter x:Key="FullyQualifiedNameToDisplayConverter" />
-            <controls:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
-            <controls:BoolToScrollBarVisibilityConverter x:Key="BoolToScrollBarVisibilityConverter" />
-            <controls:NodeSearchElementVMToBoolConverter x:Key="NodeSearchElementVMToBoolConverter" />
-            <controls:RootElementVMToBoolConverter x:Key="RootElementToBoolConverter" />
-            <controls:NodeCategoryVMToBoolConverter x:Key="NodeCategoryVMToBoolConverter" />
-            <!--Depending on the number of points in FullCategoryName margin will be done.-->
-            <controls:FullCategoryNameToMarginConverter x:Key="FullCategoryNameToMarginConverter" />
-            <controls:IntToVisibilityConverter x:Key="IntToVisibilityConverter" />
-            <controls:LibraryTreeItemsHostVisibilityConverter x:Key="LibraryTreeItemsHostVisibilityConverter" />
-
-            <!--EndRegion-->
 
             <!-- Region DataContext Templates -->
 
