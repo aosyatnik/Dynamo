@@ -164,7 +164,7 @@
     <!-- Region LibrarySearchView + IncanvasSearch-->
     
     <!--Style for every member in found MemberGroup-->
-    <Style x:Key="ListBoxMembersStyle"
+    <Style x:Key="LibraryMembersStyle"
            TargetType="{x:Type ListBoxItem}">
         <Setter Property="BorderBrush"
                 Value="Transparent" />

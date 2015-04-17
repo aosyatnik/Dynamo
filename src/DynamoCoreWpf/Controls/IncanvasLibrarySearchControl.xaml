@@ -13,16 +13,13 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ui:SharedResourceDictionary Source="{x:Static ui:SharedDictionaryManager.SidebarGridDictionaryUri}" />
+                <ui:SharedResourceDictionary Source="{x:Static ui:SharedDictionaryManager.DynamoConvertersDictionaryUri}" />
             </ResourceDictionary.MergedDictionaries>
-
-            <controls:NonEmptyStringToCollapsedConverter x:Key="NonEmptyStringToCollapsedConverter" />
-            <controls:ViewModeToVisibilityConverter x:Key="ViewModeToVisibilityConverter" />
-            <controls:BoolToVisibilityCollapsedConverter x:Key="BoolToVisibilityCollapsedConverter" />
 
             <!--Style for every member in found MemberGroup-->
             <Style x:Key="ListBoxIncanvasMembersStyle"
                    TargetType="{x:Type ListBoxItem}"
-                   BasedOn="{StaticResource ListBoxMembersStyle}">
+                   BasedOn="{StaticResource LibraryMembersStyle}">
                 <EventSetter Event="PreviewMouseLeftButtonDown"
                              Handler="OnMouseLeftButtonDown" />
             </Style>

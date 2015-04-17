@@ -129,4 +129,5 @@
     <controls:RunPreviewToolTipConverter x:Key="RunPreviewToolTipConverter"/>
     <controls:MenuItemCheckConverter x:Key="MenuItemCheckConverter"/>
     <controls:AnnotationTextConverter x:Key="AnnotationTextConverter"/>
+    <controls:ViewModeToVisibilityConverter x:Key="ViewModeToVisibilityConverter" />
 </ResourceDictionary>

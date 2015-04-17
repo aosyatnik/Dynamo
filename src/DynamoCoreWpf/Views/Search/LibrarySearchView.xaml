@@ -191,7 +191,7 @@
         <!--Style for every member in found MemberGroup-->
         <Style x:Key="ListBoxLibraryMembersStyle"
                TargetType="{x:Type ListBoxItem}"
-               BasedOn="{StaticResource ListBoxMembersStyle}">
+               BasedOn="{StaticResource LibraryMembersStyle}">
             <EventSetter Event="PreviewMouseLeftButtonDown"
                          Handler="OnMouseLeftButtonDown" />
             <EventSetter Event="KeyDown"
