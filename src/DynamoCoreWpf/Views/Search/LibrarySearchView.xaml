@@ -23,7 +23,7 @@
         <ControlTemplate x:Key="CategoryExpanderButtonTemplate"
                          TargetType="{x:Type ToggleButton}">
             <Border x:Name="ExpanderButtonBorder"
-                    Background="#282828"
+                    Background="{StaticResource RootElementBackground}"
                     BorderBrush="{TemplateBinding BorderBrush}"
                     BorderThickness="{TemplateBinding BorderThickness}"
                     Padding="8,0,0,0">

@@ -131,7 +131,7 @@
             <DataTemplate x:Key="SubclassesTemplate">
                 <ListView Name="SubCategoryListView"
                           ItemTemplateSelector="{StaticResource ClassObjectTemplateSelector}"
-                          Background="#353535"
+                          Background="{StaticResource LibraryItemHostBackground}"
                           BorderThickness="0"
                           ScrollViewer.HorizontalScrollBarVisibility="Hidden"
                           ScrollViewer.VerticalScrollBarVisibility="Hidden"
@@ -367,7 +367,7 @@
                                             <RowDefinition Height="*" />
                                         </Grid.RowDefinitions>
 
-                                        <Border BorderBrush="#353535">
+                                        <Border>
                                             <Grid Background="Transparent">
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="Auto" />
@@ -475,8 +475,7 @@
                                             </Border.Style>
                                         </Border>
 
-                                        <Border Grid.Row="1"
-                                                Background="#353535">
+                                        <Border Grid.Row="1">
                                             <ItemsPresenter x:Name="ItemsHost">
                                                 <ItemsPresenter.Visibility>
                                                     <Binding Converter="{StaticResource LibraryTreeItemsHostVisibilityConverter}" />
@@ -508,7 +507,7 @@
                                             If item is InternalElement Background will be light grey.-->
                                         <Style TargetType="{x:Type Border}">
                                             <Setter Property="Background"
-                                                    Value="#282828" />
+                                                    Value="{StaticResource RootElementBackground}" />
                                             <Style.Triggers>
                                                 <DataTrigger Value="False">
                                                     <DataTrigger.Binding>
@@ -517,7 +516,7 @@
                                                                  Converter="{StaticResource RootElementToBoolConverter}" />
                                                     </DataTrigger.Binding>
                                                     <Setter Property="Background"
-                                                            Value="#353535" />
+                                                            Value="{StaticResource LibraryItemHostBackground}" />
                                                     <Setter Property="Padding"
                                                             Value="0,0,0,0" />
                                                 </DataTrigger>
