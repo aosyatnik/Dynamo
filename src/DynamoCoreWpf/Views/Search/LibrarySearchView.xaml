@@ -15,6 +15,7 @@
             <ResourceDictionary.MergedDictionaries>
                 <ui:SharedResourceDictionary Source="{x:Static ui:SharedDictionaryManager.SidebarGridDictionaryUri}" />
                 <ui:SharedResourceDictionary Source="{x:Static ui:SharedDictionaryManager.DynamoColorsAndBrushesDictionaryUri}" />
+                <ui:SharedResourceDictionary Source="{x:Static ui:SharedDictionaryManager.DynamoConvertersDictionaryUri}" />
             </ResourceDictionary.MergedDictionaries>
 
         <!-- Region Expander Templates -->
@@ -135,16 +136,6 @@
                 </Trigger>
             </ControlTemplate.Triggers>
         </ControlTemplate>
-
-        <!--EndRegion-->
-
-        <!-- Region Converters -->
-
-        <!--Converter to Make class details not focusable-->
-            
-        <controls:ElementTypeToBoolConverter x:Key="ElementTypeToBoolConverter" />
-        <controls:SearchResultsToVisibilityConverter x:Key="SearchResultsToVisibilityConverter" />
-        <controls:NullValueToCollapsedConverter x:Key="NullValueToCollapsedConverter" />
 
         <!--EndRegion-->
 
@@ -467,7 +458,6 @@
             <Button.Visibility>
                 <MultiBinding Converter="{StaticResource SearchResultsToVisibilityConverter}">
                     <Binding Path="SearchRootCategories.Count" />
-                    <Binding Path="SearchAddonsVisibility" />
                     <Binding Path="SearchText" />
                 </MultiBinding>
             </Button.Visibility>

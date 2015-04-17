@@ -137,4 +137,5 @@
     <controls:FullCategoryNameToMarginConverter x:Key="FullCategoryNameToMarginConverter" />
     <controls:IntToVisibilityConverter x:Key="IntToVisibilityConverter" />
     <controls:LibraryTreeItemsHostVisibilityConverter x:Key="LibraryTreeItemsHostVisibilityConverter" />
+    <controls:NullValueToCollapsedConverter x:Key="NullValueToCollapsedConverter" />
 </ResourceDictionary>
