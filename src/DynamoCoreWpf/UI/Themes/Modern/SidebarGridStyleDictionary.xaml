@@ -234,6 +234,20 @@
     
     <!--EndRegion-->
 
+    <Style x:Key="SeachIconStyle"
+           TargetType="{x:Type Image}">
+        <Setter Property="Source"
+                Value="pack://application:,,,/DynamoCoreWpf;component/UI/Images/search_normal.png" />
+
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Grid}}}"
+                         Value="True">
+                <Setter Property="Source"
+                        Value="pack://application:,,,/DynamoCoreWpf;component/UI/Images/search_hover.png" />
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
     <!--EndRegion-->
 
 </ResourceDictionary>

@@ -6,6 +6,7 @@
              xmlns:controls="clr-namespace:Dynamo.Controls"
              xmlns:views="clr-namespace:Dynamo.UI.Views"
              xmlns:ui="clr-namespace:Dynamo.UI"
+             xmlns:resx="clr-namespace:Dynamo.Properties;assembly=DynamoCore"
              mc:Ignorable="d"
              MaxHeight="350"
              Width="250">
@@ -49,22 +50,8 @@
                                Width="25"
                                Height="26"
                                VerticalAlignment="Center"
-                               HorizontalAlignment="Left">
-                            <Image.Style>
-                                <Style TargetType="{x:Type Image}">
-                                    <Setter Property="Source"
-                                            Value="/DynamoCoreWpf;component/UI/Images/search_normal.png" />
-
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Grid}}}"
-                                                     Value="True">
-                                            <Setter Property="Source"
-                                                    Value="/DynamoCoreWpf;component/UI/Images/search_hover.png" />
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Image.Style>
-                        </Image>
+                               HorizontalAlignment="Left"
+                               Style="{StaticResource SeachIconStyle}"/>
 
                         <TextBlock Name="SearchTextBlock"
                                    FontSize="14"
@@ -75,9 +62,8 @@
                                                     Converter={StaticResource NonEmptyStringToCollapsedConverter}}"
                                    HorizontalAlignment="Center"
                                    Height="18"
-                                   Margin="3,0,0,0">
-                        SEARCH LIBRARY
-                        </TextBlock>
+                                   Margin="3,0,0,0"
+                                   Text="{x:Static resx:Resources.SearchTextBlockText}" />
 
                     </StackPanel>
 
