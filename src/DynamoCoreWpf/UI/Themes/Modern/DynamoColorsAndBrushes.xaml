@@ -71,5 +71,7 @@
     <!-- Library background-->
     <SolidColorBrush x:Key="LibraryCommonBackground" Color="#333333" />
     <SolidColorBrush x:Key="LibraryMemberOnHover" Color="#404040" />
-    
+
+    <!-- Library text colors-->
+    <SolidColorBrush x:Key="MemberButtonText" Color="#aaaaaa" />
 </ResourceDictionary>

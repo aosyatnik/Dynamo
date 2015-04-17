@@ -90,7 +90,7 @@
                             <TextBlock HorizontalAlignment="Center"
                                        VerticalAlignment="Top"
                                        TextAlignment="Center"
-                                       Foreground="#AAAAAA"
+                                       Foreground="{StaticResource MemberButtonText}"
                                        Grid.Row="1"
                                        Grid.Column="0"
                                        Grid.ColumnSpan="3"

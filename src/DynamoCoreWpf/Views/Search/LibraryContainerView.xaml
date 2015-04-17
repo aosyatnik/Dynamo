@@ -64,7 +64,7 @@
                    FontWeight="Normal"
                    Margin="0"
                    Padding="16,0,0,0"
-                   Foreground="#AAAAAA"
+                   Foreground="{StaticResource MemberButtonText}"
                    VerticalAlignment="Center"
                    HorizontalAlignment="Stretch"
                    Content="{x:Static p:Resources.LibraryViewTitle}" />
