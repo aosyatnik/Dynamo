@@ -53,7 +53,7 @@
                                VerticalAlignment="Center"
                                Text="{Binding Name}"
                                Margin="5,0,0,0"
-                               Foreground="#CCCCCC"
+                               Foreground="{StaticResource CommonSidebarTextColor}"
                                FontSize="13" />
                     <StackPanel.Style>
                         <Style TargetType="{x:Type StackPanel}">
@@ -74,7 +74,7 @@
                                 <Trigger Property="IsMouseOver"
                                          Value="True">
                                     <Setter Property="Background"
-                                            Value="#404040" />
+                                            Value="{StaticResource LibraryMemberOnHover}" />
                                 </Trigger>
                             </Style.Triggers>
                         </Style>
@@ -210,7 +210,7 @@
                                     </MultiTrigger.Conditions>
                                     <MultiTrigger.Setters>
                                         <Setter Property="Background"
-                                                Value="#404040" />
+                                                Value="{StaticResource LibraryMemberOnHover}" />
                                     </MultiTrigger.Setters>
                                 </MultiTrigger>
                             </Style.Triggers>
@@ -463,7 +463,7 @@
                                                             </MultiDataTrigger.Conditions>
                                                             <MultiDataTrigger.Setters>
                                                                 <Setter Property="Background"
-                                                                        Value="#404040" />
+                                                                        Value="{StaticResource LibraryMemberOnHover}" />
                                                             </MultiDataTrigger.Setters>
                                                         </MultiDataTrigger>
 

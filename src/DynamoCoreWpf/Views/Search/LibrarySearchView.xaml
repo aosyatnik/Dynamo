@@ -14,6 +14,7 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ui:SharedResourceDictionary Source="{x:Static ui:SharedDictionaryManager.SidebarGridDictionaryUri}" />
+                <ui:SharedResourceDictionary Source="{x:Static ui:SharedDictionaryManager.DynamoColorsAndBrushesDictionaryUri}" />
             </ResourceDictionary.MergedDictionaries>
 
         <!-- Region Expander Templates -->
@@ -178,12 +179,12 @@
                 <Trigger Property="IsMouseOver"
                          Value="True">
                     <Setter Property="Background"
-                            Value="#404040" />
+                            Value="{StaticResource LibraryMemberOnHover}" />
                 </Trigger>
                 <Trigger Property="IsSelected"
                          Value="True">
                     <Setter Property="Background"
-                            Value="#404040" />
+                            Value="{StaticResource LibraryMemberOnHover}" />
                 </Trigger>
             </Style.Triggers>
         </Style>
@@ -209,7 +210,7 @@
     <Grid>
         <ScrollViewer CanContentScroll="True"
                       PreviewMouseWheel="OnPreviewMouseWheel"
-                      Background="#333333"
+                      Background="{StaticResource LibraryCommonBackground}"
                       Name="ScrollLibraryViewer"
                       Template="{DynamicResource LibraryScrollViewerControlTemplate}"
                       Style="{DynamicResource LibraryScrollViewerStyle}">
@@ -350,7 +351,7 @@
                                                         </MultiTrigger.Conditions>
                                                         <MultiTrigger.Setters>
                                                             <Setter Property="Background"
-                                                                    Value="#404040" />
+                                                                    Value="{StaticResource LibraryMemberOnHover}" />
                                                         </MultiTrigger.Setters>
                                                     </MultiTrigger>
                                                     <MultiTrigger>
@@ -362,7 +363,7 @@
                                                         </MultiTrigger.Conditions>
                                                         <MultiTrigger.Setters>
                                                             <Setter Property="Background"
-                                                                    Value="#404040" />
+                                                                    Value="{StaticResource LibraryMemberOnHover}" />
                                                         </MultiTrigger.Setters>
                                                     </MultiTrigger>
                                                 </Style.Triggers>
