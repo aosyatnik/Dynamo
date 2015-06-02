@@ -107,25 +107,25 @@
                 Margin="1,2,1,0"
                 Grid.Row="1"
                 Name="FoundMembers">
-            <ScrollViewer>
+
                 <ListBox Name="MembersListBox"
-                         Background="Transparent"
-                         BorderBrush="Transparent"
-                         ItemContainerStyle="{StaticResource SearchMemberStyle}"
-                         ItemsSource="{Binding SearchResults, NotifyOnTargetUpdated=True}"
-                         TargetUpdated="OnMembersListBoxUpdated">
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <ContentControl Template="{StaticResource MemberControlTemplate}" />
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                    <ListBox.Template>
-                        <ControlTemplate>
-                            <ItemsPresenter />
-                        </ControlTemplate>
-                    </ListBox.Template>
-                </ListBox>
-            </ScrollViewer>
+                     Background="Transparent"
+                     BorderBrush="Transparent"
+                     ItemContainerStyle="{StaticResource SearchMemberStyle}"
+                     ItemsSource="{Binding SearchResults, NotifyOnTargetUpdated=True}"
+                     TargetUpdated="OnMembersListBoxUpdated"
+                     ScrollViewer.HorizontalScrollBarVisibility="Hidden">
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <VirtualizingStackPanel/>
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <ContentControl Template="{StaticResource MemberControlTemplate}" />
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
 
             <Border.Style>
                 <Style TargetType="{x:Type Border}">
