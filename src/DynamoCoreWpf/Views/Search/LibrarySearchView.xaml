@@ -118,18 +118,6 @@
                                                     <RowDefinition Height="*" />
                                                 </Grid.RowDefinitions>
 
-                                                <ToggleButton x:Name="Expander"
-                                                              Background="Transparent"
-                                                              IsHitTestVisible="False"
-                                                              Style="{StaticResource LibraryExpandCollapseToggleStyle}"
-                                                              ClickMode="Press"
-                                                              IsChecked="{Binding IsExpanded, Mode=OneWay}">
-                                                    <ToggleButton.Margin>
-                                                        <Binding Path="FullCategoryName"
-                                                                 Converter="{StaticResource FullCategoryNameToMarginConverter}" />
-                                                    </ToggleButton.Margin>
-                                                </ToggleButton>
-
                                                 <ContentPresenter Grid.Column="1"
                                                                   VerticalAlignment="Center"
                                                                   ContentSource="Header" />
