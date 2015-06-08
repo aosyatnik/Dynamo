@@ -157,23 +157,19 @@
                                         <ContentPresenter />
                                     </ControlTemplate>
                                 </Button.Template>
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="*" />
+                                    </Grid.RowDefinitions>
 
-                                <Border Name="Bd"
-                                        BorderThickness="0">
-                                    <Grid>
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="Auto" />
-                                            <RowDefinition Height="*" />
-                                        </Grid.RowDefinitions>
+                                    <ContentPresenter Grid.Row="0"
+                                                      VerticalAlignment="Center"
+                                                      ContentSource="Header" />
 
-                                        <ContentPresenter Grid.Row="0"
-                                                          VerticalAlignment="Center"
-                                                          ContentSource="Header" />
-
-                                        <ItemsPresenter x:Name="ItemsHost"
-                                                        Grid.Row="1" />
-                                    </Grid>
-                                </Border>
+                                    <ItemsPresenter x:Name="ItemsHost"
+                                                    Grid.Row="1" />
+                                </Grid>
                             </Button>
                         </ControlTemplate>
                     </Setter.Value>
