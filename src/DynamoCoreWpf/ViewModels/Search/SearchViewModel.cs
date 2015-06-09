@@ -928,12 +928,13 @@ namespace Dynamo.ViewModels
                 return;
             }
 
-            if (selectedCategoryIndex != SearchRootCategories.Count() - 1)
+            if (selectedCategoryIndex != 0)
             {
                 UnSelectOldMember();
                 selectedCategoryIndex--;
                 selectedMemberGroupIndex = SearchRootCategories[selectedCategoryIndex].MemberGroups.Count() - 1;
-                SelectedMemberIndex = selectedCategory.MemberGroups.ElementAt(selectedMemberGroupIndex).Members.Count() - 1;
+                SelectedMemberIndex = SearchRootCategories[selectedCategoryIndex].MemberGroups.
+                                            ElementAt(selectedMemberGroupIndex).Members.Count() - 1;
                 return;
             }
         }

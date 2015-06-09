@@ -202,14 +202,11 @@
                         </ControlTemplate>
                     </Setter.Value>
                 </Setter>
-
-                <EventSetter Event="PreviewKeyDown"
-                             Handler="OnMainGridKeyDown" />
             </Style>
         </ResourceDictionary>
     </UserControl.Resources>
 
-    <Grid KeyDown="OnMainGridKeyDown">
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
@@ -253,7 +250,6 @@
                    ItemTemplateSelector="{StaticResource LibrarySearchTreeTemplateSelector}"
                    ItemContainerStyle="{StaticResource LibraryTreeViewItem}"
                    ScrollViewer.CanContentScroll="True"
-                   KeyDown="OnCategoryKeyDown"
                    VirtualizingStackPanel.IsVirtualizing="True"
                    VirtualizingStackPanel.VirtualizationMode="Recycling" />
 
