@@ -142,16 +142,18 @@
                                                         MemberTemplate="{StaticResource MemberDataTemplate}"
                                                         MemberGroupsTemplate="{StaticResource MemberGroupsDataTemplate}"
                                                         CategoryTemplate="{StaticResource NestedCategoryDataTemplate}" />
-            
+
             <Style x:Key="LibraryTreeViewItem"
                    TargetType="{x:Type TreeViewItem}">
                 <Setter Property="IsExpanded"
-                        Value="True" />
+                        Value="{Binding IsExpanded, Mode=OneWay}" />
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate TargetType="{x:Type TreeViewItem}">
                             <Button Command="{Binding ClickedCommand}"
-                                    Focusable="False">
+                                    Focusable="False"
+                                    MouseEnter="OnMemberMouseEnter"
+                                    MouseLeave="OnPopupMouseLeave">
                                 <Button.Template>
                                     <ControlTemplate TargetType="Button">
                                         <ContentPresenter />
@@ -163,17 +165,38 @@
                                         <RowDefinition Height="*" />
                                     </Grid.RowDefinitions>
 
-                                    <ContentPresenter Grid.Row="0"
-                                                      VerticalAlignment="Center"
-                                                      ContentSource="Header" />
+
+                                    <Border Name="ContentPresenterBorder"
+                                            Grid.Row="0">
+                                        <ContentPresenter VerticalAlignment="Center"
+                                                          ContentSource="Header" />
+                                    </Border>
 
                                     <ItemsPresenter x:Name="ItemsHost"
-                                                    Grid.Row="1" />
+                                                    Grid.Row="1"/>
                                 </Grid>
                             </Button>
+
+                            <ControlTemplate.Triggers>
+                                <!--<Trigger Property="IsExpanded"
+                                         Value="false">
+                                    <Setter Property="Visibility"
+                                            TargetName="ItemsHost"
+                                            Value="Collapsed" />
+                                </Trigger>-->
+                                <Trigger Property="IsSelected"
+                                         Value="true">
+                                    <Setter Property="Background"
+                                            TargetName="ContentPresenterBorder"
+                                            Value="{StaticResource LibraryMemberOnHover}" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
                         </ControlTemplate>
                     </Setter.Value>
                 </Setter>
+
+                <EventSetter Event="PreviewKeyDown"
+                             Handler="OnMainGridKeyDown" />
             </Style>
         </ResourceDictionary>
     </UserControl.Resources>
@@ -193,25 +216,25 @@
                        Margin="16,8,0,8"
                        Foreground="{StaticResource NestedMemberTextColor}"
                        FontSize="12" />
-            <ListBox x:Name="topResultListBox"
-                     Background="Transparent"
-                     BorderBrush="Transparent"
-                     ItemContainerStyle="{DynamicResource LibraryMemberStyle}"
-                     ScrollViewer.HorizontalScrollBarVisibility="Hidden"
-                     ItemsSource="{Binding Members,NotifyOnTargetUpdated=True}"
-                     KeyDown="OnMemberButtonKeyDown"
-                     MouseEnter="OnTopResultMouseEnter"
-                     MouseLeave="OnTopResultMouseLeave"
-                     TargetUpdated="OnTopResultTargetUpdated">
-                <ListBox.ItemTemplate>
+            <TreeView x:Name="topResultTreeView"
+                      Background="Transparent"
+                      BorderBrush="Transparent"
+                      ItemContainerStyle="{StaticResource LibraryTreeViewItem}"
+                      ScrollViewer.HorizontalScrollBarVisibility="Hidden"
+                      ItemsSource="{Binding Members,NotifyOnTargetUpdated=True}"
+                      KeyDown="OnMemberButtonKeyDown"
+                      MouseEnter="OnTopResultMouseEnter"
+                      MouseLeave="OnTopResultMouseLeave"
+                      TargetUpdated="OnTopResultTargetUpdated">
+                <TreeView.ItemTemplate>
                     <DataTemplate>
                         <Border BorderThickness="2,0,0,0"
                                 BorderBrush="Yellow">
                             <ContentControl Template="{StaticResource MemberControlTemplate}" />
                         </Border>
                     </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
+                </TreeView.ItemTemplate>
+            </TreeView>
         </StackPanel>
 
         <TreeView  Name="CategoryTreeView"
@@ -226,6 +249,10 @@
                    VirtualizingStackPanel.IsVirtualizing="True"
                    VirtualizingStackPanel.VirtualizationMode="Recycling" />
 
+        <uicontrols:LibraryToolTipPopup x:Name="libraryToolTipPopup"
+                                        StaysOpen="True"
+                                        AllowsTransparency="True"
+                                        MouseLeave="OnPopupMouseLeave" />
     </Grid>
 
 </UserControl>

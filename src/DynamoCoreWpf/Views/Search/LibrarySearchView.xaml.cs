@@ -20,7 +20,7 @@ namespace Dynamo.UI.Views
     public partial class LibrarySearchView : UserControl
     {
         public UIElement SearchTextBox;
-        private ListBoxItem HighlightedItem;
+        private TreeViewItem HighlightedItem;
         private SearchViewModel viewModel;
 
 
@@ -89,20 +89,20 @@ namespace Dynamo.UI.Views
         {
             if (e.Key != Key.Enter) return;
 
-            var listBoxItem = sender as ListBoxItem;
-            if (listBoxItem == null)
+            var treeViewItem = sender as TreeViewItem;
+            if (treeViewItem == null)
             {
                 // Case for top result.
                 // Top result can have just one selected item.
-                listBoxItem = GetListItemByIndex(sender as ListBox, 0);
-                if (listBoxItem == null) return;
+                treeViewItem = GetListItemByIndex(sender as TreeView, 0);
+                if (treeViewItem == null) return;
             }
 
-            ExecuteSearchElement(listBoxItem);
+            ExecuteSearchElement(treeViewItem);
             e.Handled = true;
         }
 
-        private void ExecuteSearchElement(ListBoxItem listBoxItem)
+        private void ExecuteSearchElement(FrameworkElement listBoxItem)
         {
             var searchElement = listBoxItem.DataContext as NodeSearchElementViewModel;
             if (searchElement != null)
@@ -139,13 +139,6 @@ namespace Dynamo.UI.Views
 
         #endregion
 
-        private void OnPreviewMouseWheel(object sender, MouseWheelEventArgs e)
-        {
-            ScrollViewer scv = (ScrollViewer)sender;
-            scv.ScrollToVerticalOffset(scv.VerticalOffset - e.Delta);
-            e.Handled = true;
-        }
-
         private void OnNoMatchFoundButtonClick(object sender, RoutedEventArgs e)
         {
             // Clear SearchText in ViewModel, as result search textbox clears as well.
@@ -174,12 +167,7 @@ namespace Dynamo.UI.Views
 
         #region ToolTip methods
 
-        private void OnListBoxItemMouseEnter(object sender, MouseEventArgs e)
-        {
-            UpdateHighlightedItem(sender as ListBoxItem);
-        }
-
-        private void OnListBoxItemGotFocus(object sender, RoutedEventArgs e)
+        private void OnMemberMouseEnter(object sender, RoutedEventArgs e)
         {
             ShowTooltip(sender);
         }
@@ -198,12 +186,21 @@ namespace Dynamo.UI.Views
 
         private void ShowTooltip(object sender)
         {
-           
+            FrameworkElement fromSender = sender as FrameworkElement;
+            if (fromSender == null) return;
+
+            var senderVM = fromSender.DataContext as NodeSearchElementViewModel;
+
+            if (senderVM != null && senderVM.Visibility)
+            {
+                libraryToolTipPopup.SetDataContext(senderVM);
+                libraryToolTipPopup.PlacementTarget = fromSender;
+            }
         }
 
         private void CloseToolTipInternal(bool closeImmediately = false)
         {
-           
+            libraryToolTipPopup.SetDataContext(null, closeImmediately);
         }
 
         private void OnRequestCloseToolTip(object sender, EventArgs e)
@@ -221,7 +218,7 @@ namespace Dynamo.UI.Views
         // When element can't move further, it notifies its' parent about that.
         // And then parent decides what to do with it.
 
-        private void UpdateHighlightedItem(ListBoxItem newItem)
+        private void UpdateHighlightedItem(TreeViewItem newItem)
         {
             if (HighlightedItem == newItem)
                 return;
@@ -253,7 +250,7 @@ namespace Dynamo.UI.Views
             // For the first time set top result as HighlightedItem. 
             if (HighlightedItem == null)
             {
-                //UpdateHighlightedItem(GetListItemByIndex(topResultListBox, 0));
+                UpdateHighlightedItem(GetListItemByIndex(topResultTreeView, 0));
             }
             if (HighlightedItem == null) return;
 
@@ -264,8 +261,8 @@ namespace Dynamo.UI.Views
                 // This may result in corresponding NodeSearchElementViewModel being removed or 
                 // updated. When that happens, the visual element 'HighlightedItem' that gets 
                 // bound to the original NodeSearchElementViewModel then becomes DisconnectedItem.
-                // In such cases, we will reset the HighlightedItem to 'topResultListBox'.
-                //HighlightedItem = GetSelectedListBoxItem(topResultListBox);
+                // In such cases, we will reset the HighlightedItem to 'topResultTreeView'.
+                HighlightedItem = GetListItemByIndex(topResultTreeView, 0);
                 if (HighlightedItem == null) return;
 
                 target = PresentationSource.FromVisual(HighlightedItem);
@@ -282,14 +279,14 @@ namespace Dynamo.UI.Views
                 });
         }
 
-        private ListBoxItem GetSelectedListBoxItem(ListBox listbox)
+        /*private TreeViewItem GetSelectedListBoxItem(TreeView listbox)
         {
             if (!listbox.HasItems || (listbox.SelectedIndex == -1))
                 return null;
 
             var generator = listbox.ItemContainerGenerator;
             return generator.ContainerFromItem(listbox.SelectedItem) as ListBoxItem;
-        }
+        }*/
 
         // This event is used to move inside members.
         private void OnMembersListBoxKeyDown(object sender, KeyEventArgs e)
@@ -302,7 +299,7 @@ namespace Dynamo.UI.Views
             }
 
             var selectedMember = HighlightedItem.DataContext as NodeSearchElementViewModel;
-            var membersListBox = sender as ListBox;
+            var membersListBox = sender as TreeView;
             var members = membersListBox.Items;
 
             int selectedMemberIndex = 0;
@@ -370,19 +367,19 @@ namespace Dynamo.UI.Views
             if (nextSelectedMemberGroupIndex < 0 || (nextSelectedMemberGroupIndex >= memberGroups.Count))
                 return;
 
-            var item = GetListItemByIndex(memberGroupListBox, nextSelectedMemberGroupIndex);
-            var nextSelectedMembers = WpfUtilities.ChildOfType<ListBox>(item, "MembersListBox");
+            //var item = GetListItemByIndex(memberGroupListBox, nextSelectedMemberGroupIndex);
+            //var nextSelectedMembers = WpfUtilities.ChildOfType<ListBox>(item, "MembersListBox");
 
             // When moving on to the next member group list below (by pressing down arrow),
             // the focus should moved on to the first member in the member group list. Likewise,
             // when moving to the previous member group list above, the focus should be set on 
             // the last member in that list.
             var itemIndex = 0;
-            if (e.Key == Key.Up)
-                itemIndex = nextSelectedMembers.Items.Count - 1;
+            //if (e.Key == Key.Up)
+                //itemIndex = nextSelectedMembers.Items.Count - 1;
 
 
-            UpdateHighlightedItem(GetListItemByIndex(nextSelectedMembers, itemIndex));
+            //UpdateHighlightedItem(GetListItemByIndex(nextSelectedMembers, itemIndex));
 
             e.Handled = true;
         }
@@ -444,7 +441,7 @@ namespace Dynamo.UI.Views
                 var listItem = FindChildListItemByIndex(memberGroupsListBox, "MembersListBox");
                 if (listItem != null)
                 {
-                    UpdateHighlightedItem(listItem);
+                    //UpdateHighlightedItem(listItem);
                 }
 
                 e.Handled = true;
@@ -536,11 +533,11 @@ namespace Dynamo.UI.Views
             if (e.Key == Key.Up)
             {
                 var memberGroupsList = WpfUtilities.ChildOfType<ListBox>(nextSelectedCategory, "MemberGroupsListBox");
-                var lastMemberGroup = GetListItemByIndex(memberGroupsList, memberGroupsList.Items.Count - 1);
-                var membersList = WpfUtilities.ChildOfType<ListBox>(lastMemberGroup, "MembersListBox");
+                //var lastMemberGroup = GetListItemByIndex(memberGroupsList, memberGroupsList.Items.Count - 1);
+                //var membersList = WpfUtilities.ChildOfType<ListBox>(lastMemberGroup, "MembersListBox");
 
                 // If key is up, then we have to select the last method button.
-                UpdateHighlightedItem(GetListItemByIndex(membersList, membersList.Items.Count - 1));
+                //UpdateHighlightedItem(GetListItemByIndex(membersList, membersList.Items.Count - 1));
             }
             else // Otherwise, Down was pressed, and we have to select first class/method button.
             {
@@ -559,19 +556,19 @@ namespace Dynamo.UI.Views
 #else
                 // If there are no classes, then focus on first method.
                 var memberGroupsList = FindChildListItemByIndex(nextSelectedCategory, "MemberGroupsListBox");
-                UpdateHighlightedItem(FindChildListItemByIndex(memberGroupsList, "MembersListBox"));
+                //UpdateHighlightedItem(FindChildListItemByIndex(memberGroupsList, "MembersListBox"));
 #endif
             }
             e.Handled = true;
         }
 
         /// <summary>
-        /// "MainGrid" contains both "topResultListBox" and "CategoryListView". When 
+        /// "MainGrid" contains both "topResultTreeView" and "CategoryListView". When 
         /// "KeyDown" event bubbles up to the level of "MainGrid", it will then decide 
         /// on which element should the focus go (depending on the navigational key).
         /// This typically happens during the following scenarios:
         /// 
-        /// 1. Up/down key is pressed when selected item is on "topResultListBox"
+        /// 1. Up/down key is pressed when selected item is on "topResultTreeView"
         /// 2. Up key is pressed when selected item is on first row of first category
         /// </summary>
         private void OnMainGridKeyDown(object sender, KeyEventArgs e)
@@ -584,15 +581,16 @@ namespace Dynamo.UI.Views
             // that means we have to move to first class/method button.
             if (e.Key == Key.Down)
             {
-                //if (topResultListBox.IsMouseOver)
+                if (topResultTreeView.IsMouseOver)
                 {
                     e.Handled = true;
                     return;
                 }
 
                 //Unselect top result.
-                if (e.OriginalSource is ListBox)
-                    (e.OriginalSource as ListBox).UnselectAll();
+                var topTreeView = e.OriginalSource as TreeView;
+                if (topTreeView != null)
+                    GetListItemByIndex(topTreeView, 0).IsSelected = false;
 
                 var firstCategory = FindFirstVisibleCategory(librarySearchViewElement);
                 if (firstCategory == null)
@@ -612,11 +610,11 @@ namespace Dynamo.UI.Views
 #endif
                 // Otherwise, set selection on the first method button.
                 var firstMemberGroup = FindChildListItemByIndex(firstCategory, "MemberGroupsListBox");
-                UpdateHighlightedItem(FindChildListItemByIndex(firstMemberGroup, "MembersListBox"));
+                //UpdateHighlightedItem(FindChildListItemByIndex(firstMemberGroup, "MembersListBox"));
             }
             else // Otherwise, Up was pressed. So, we have to move to top result.
             {
-                UpdateHighlightedItem(FindChildListItemByIndex(this, "topResultListBox"));
+                //UpdateHighlightedItem(FindChildListItemByIndex(this, "topResultTreeView"));
             }
 
             e.Handled = true;
@@ -647,13 +645,13 @@ namespace Dynamo.UI.Views
             return category;
         }
 
-        private ListBoxItem GetListItemByIndex(ListBox parent, int index)
+        private TreeViewItem GetListItemByIndex(TreeView parent, int index)
         {
             if (parent.Equals(null)) return null;
 
             var generator = parent.ItemContainerGenerator;
             if ((index >= 0) && (index < parent.Items.Count))
-                return generator.ContainerFromIndex(index) as ListBoxItem;
+                return generator.ContainerFromIndex(index) as TreeViewItem;
 
             return null;
         }
@@ -669,32 +667,32 @@ namespace Dynamo.UI.Views
                 return;
             }
 
-            /*if (topResultListBox.Items.Count > 0)
+            if (topResultTreeView.Items.Count > 0)
             {
                 // Update highlighted item when the ItemContainerGenerator is ready.
-               // topResultListBox.ItemContainerGenerator.StatusChanged += OnTopResultListBoxIcgStatusChanged;
+                topResultTreeView.ItemContainerGenerator.StatusChanged += OnTopResultTreeViewIcgStatusChanged;
             }
             else
             {
-                // Or hide ToolTip if topResultListBox is empty.
+                // Or hide ToolTip if topResultTreeView is empty.
                 CloseToolTipInternal(true);
                 UpdateHighlightedItem(null);
-            }*/
+            }
         }
 
         // ListBox.ItemContainerGenerator works asynchronously. To make sure it is ready for use
         // we check status of it. If status is correct HighlightedItem updated. 
-        private void OnTopResultListBoxIcgStatusChanged(object sender, EventArgs e)
+        private void OnTopResultTreeViewIcgStatusChanged(object sender, EventArgs e)
         {
-            /*if (topResultListBox.ItemContainerGenerator.Status == GeneratorStatus.ContainersGenerated)
+            if (topResultTreeView.ItemContainerGenerator.Status == GeneratorStatus.ContainersGenerated)
             {
-                topResultListBox.ItemContainerGenerator.StatusChanged -= OnTopResultListBoxIcgStatusChanged;
+                topResultTreeView.ItemContainerGenerator.StatusChanged -= OnTopResultTreeViewIcgStatusChanged;
                 Dispatcher.BeginInvoke(new Action(() =>
                     {
-                        //UpdateHighlightedItem(GetListItemByIndex(topResultListBox, 0));
+                        UpdateHighlightedItem(GetListItemByIndex(topResultTreeView, 0));
                     }),
                     DispatcherPriority.Loaded);
-            }*/
+            }
         }
 
         #endregion
@@ -702,7 +700,7 @@ namespace Dynamo.UI.Views
         // As soon as user hover on TopResult HighlightedIten should be updated to it.
         private void OnTopResultMouseEnter(object sender, MouseEventArgs e)
         {
-           // UpdateHighlightedItem(GetListItemByIndex(topResultListBox, 0));
+            UpdateHighlightedItem(GetListItemByIndex(topResultTreeView, 0));
         }
 
         // As soon as user goes out of TopResult HighlightedIten should set to null
