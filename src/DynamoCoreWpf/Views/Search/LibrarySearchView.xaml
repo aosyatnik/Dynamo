@@ -212,7 +212,7 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <!--<StackPanel x:Name="topResultPanel"
+        <StackPanel x:Name="topResultPanel"
                     DataContext="{Binding TopResult}">
             <StackPanel.Visibility>
                 <Binding Converter="{StaticResource NullValueToCollapsedConverter}" />
@@ -226,11 +226,7 @@
                       BorderBrush="Transparent"
                       ItemContainerStyle="{StaticResource LibraryTreeViewItem}"
                       ScrollViewer.HorizontalScrollBarVisibility="Hidden"
-                      ItemsSource="{Binding Members,NotifyOnTargetUpdated=True}"
-                      KeyDown="OnMemberButtonKeyDown"
-                      MouseEnter="OnTopResultMouseEnter"
-                      MouseLeave="OnTopResultMouseLeave"
-                      TargetUpdated="OnTopResultTargetUpdated">
+                      ItemsSource="{Binding Members,NotifyOnTargetUpdated=True}">
                 <TreeView.ItemTemplate>
                     <DataTemplate>
                         <Border BorderThickness="2,0,0,0"
@@ -240,7 +236,7 @@
                     </DataTemplate>
                 </TreeView.ItemTemplate>
             </TreeView>
-        </StackPanel>-->
+        </StackPanel>
 
         <TreeView  Name="CategoryTreeView"
                    Grid.Row="1"
