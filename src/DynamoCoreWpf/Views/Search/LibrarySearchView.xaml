@@ -47,6 +47,12 @@
                                     <Setter Property="Background"
                                             Value="{StaticResource LibraryMemberOnHover}" />
                                 </DataTrigger>
+                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self},
+                                                               Path=DataContext.IsSelected}"
+                                             Value="True">
+                                    <Setter Property="Background"
+                                            Value="{StaticResource LibraryMemberOnHover}" />
+                                </DataTrigger>
                             </Style.Triggers>
                         </Style>
                     </StackPanel.Style>
@@ -147,6 +153,8 @@
                    TargetType="{x:Type TreeViewItem}">
                 <Setter Property="IsExpanded"
                         Value="{Binding IsExpanded, Mode=OneWay}" />
+                <Setter Property="IsSelected"
+                        Value="{Binding IsSelected, Mode=OneWay}" />
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate TargetType="{x:Type TreeViewItem}">
@@ -188,7 +196,7 @@
                                          Value="true">
                                     <Setter Property="Background"
                                             TargetName="ContentPresenterBorder"
-                                            Value="{StaticResource LibraryMemberOnHover}" />
+                                            Value="Red" />
                                 </Trigger>
                             </ControlTemplate.Triggers>
                         </ControlTemplate>
@@ -207,7 +215,7 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <StackPanel x:Name="topResultPanel"
+        <!--<StackPanel x:Name="topResultPanel"
                     DataContext="{Binding TopResult}">
             <StackPanel.Visibility>
                 <Binding Converter="{StaticResource NullValueToCollapsedConverter}" />
@@ -216,7 +224,7 @@
                        Margin="16,8,0,8"
                        Foreground="{StaticResource NestedMemberTextColor}"
                        FontSize="12" />
-            <TreeView x:Name="topResultTreeView"
+           <TreeView x:Name="topResultTreeView"
                       Background="Transparent"
                       BorderBrush="Transparent"
                       ItemContainerStyle="{StaticResource LibraryTreeViewItem}"
@@ -235,7 +243,7 @@
                     </DataTemplate>
                 </TreeView.ItemTemplate>
             </TreeView>
-        </StackPanel>
+        </StackPanel>-->
 
         <TreeView  Name="CategoryTreeView"
                    Grid.Row="1"

@@ -198,10 +198,13 @@ namespace Dynamo.Search
                     break;
 
                 case Key.Down:
-                case Key.Up:
-                case Key.Enter:
                     if (viewModel.CurrentMode == SearchViewModel.ViewMode.LibrarySearchView)
-                        librarySearchView.SelectNext(e.Key);
+                        viewModel.SelectNext();
+                    break;
+
+                case Key.Up:
+                    if (viewModel.CurrentMode == SearchViewModel.ViewMode.LibrarySearchView)
+                        viewModel.SelectPrevious();
                     break;
             }
         }

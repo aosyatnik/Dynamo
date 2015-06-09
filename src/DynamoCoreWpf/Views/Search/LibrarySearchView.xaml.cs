@@ -188,13 +188,14 @@ namespace Dynamo.UI.Views
         {
             FrameworkElement fromSender = sender as FrameworkElement;
             if (fromSender == null) return;
+            var nodeVM = fromSender.DataContext as NodeSearchElementViewModel;
 
             var senderVM = fromSender.DataContext as NodeSearchElementViewModel;
 
             if (senderVM != null && senderVM.Visibility)
             {
-                libraryToolTipPopup.SetDataContext(senderVM);
                 libraryToolTipPopup.PlacementTarget = fromSender;
+                libraryToolTipPopup.SetDataContext(fromSender.DataContext);
             }
         }
 
@@ -250,7 +251,7 @@ namespace Dynamo.UI.Views
             // For the first time set top result as HighlightedItem. 
             if (HighlightedItem == null)
             {
-                UpdateHighlightedItem(GetListItemByIndex(topResultTreeView, 0));
+                //UpdateHighlightedItem(GetListItemByIndex(topResultListBox, 0));
             }
             if (HighlightedItem == null) return;
 
@@ -260,9 +261,9 @@ namespace Dynamo.UI.Views
                 // During search, backing data collections typically get updated frequently.
                 // This may result in corresponding NodeSearchElementViewModel being removed or 
                 // updated. When that happens, the visual element 'HighlightedItem' that gets 
-                // bound to the original NodeSearchElementViewModel then becomes DisconnectedItem.
-                // In such cases, we will reset the HighlightedItem to 'topResultTreeView'.
-                HighlightedItem = GetListItemByIndex(topResultTreeView, 0);
+
+                // In such cases, we will reset the HighlightedItem to 'topResultListBox'.
+                //HighlightedItem = GetSelectedListBoxItem(topResultListBox);
                 if (HighlightedItem == null) return;
 
                 target = PresentationSource.FromVisual(HighlightedItem);
@@ -581,7 +582,7 @@ namespace Dynamo.UI.Views
             // that means we have to move to first class/method button.
             if (e.Key == Key.Down)
             {
-                if (topResultTreeView.IsMouseOver)
+                //if (topResultListBox.IsMouseOver)
                 {
                     e.Handled = true;
                     return;
@@ -667,7 +668,7 @@ namespace Dynamo.UI.Views
                 return;
             }
 
-            if (topResultTreeView.Items.Count > 0)
+            /*if (topResultTreeView.Items.Count > 0)
             {
                 // Update highlighted item when the ItemContainerGenerator is ready.
                 topResultTreeView.ItemContainerGenerator.StatusChanged += OnTopResultTreeViewIcgStatusChanged;
@@ -677,14 +678,15 @@ namespace Dynamo.UI.Views
                 // Or hide ToolTip if topResultTreeView is empty.
                 CloseToolTipInternal(true);
                 UpdateHighlightedItem(null);
-            }
+            }*/
         }
 
-        // ListBox.ItemContainerGenerator works asynchronously. To make sure it is ready for use
+        // TreeView.ItemContainerGenerator works asynchronously. To make sure it is ready for use
         // we check status of it. If status is correct HighlightedItem updated. 
         private void OnTopResultTreeViewIcgStatusChanged(object sender, EventArgs e)
         {
-            if (topResultTreeView.ItemContainerGenerator.Status == GeneratorStatus.ContainersGenerated)
+
+            /*if (topResultTreeView.ItemContainerGenerator.Status == GeneratorStatus.ContainersGenerated)
             {
                 topResultTreeView.ItemContainerGenerator.StatusChanged -= OnTopResultTreeViewIcgStatusChanged;
                 Dispatcher.BeginInvoke(new Action(() =>
@@ -692,7 +694,7 @@ namespace Dynamo.UI.Views
                         UpdateHighlightedItem(GetListItemByIndex(topResultTreeView, 0));
                     }),
                     DispatcherPriority.Loaded);
-            }
+            }*/
         }
 
         #endregion
@@ -700,7 +702,7 @@ namespace Dynamo.UI.Views
         // As soon as user hover on TopResult HighlightedIten should be updated to it.
         private void OnTopResultMouseEnter(object sender, MouseEventArgs e)
         {
-            UpdateHighlightedItem(GetListItemByIndex(topResultTreeView, 0));
+            //UpdateHighlightedItem(GetListItemByIndex(topResultTreeView, 0));
         }
 
         // As soon as user goes out of TopResult HighlightedIten should set to null
