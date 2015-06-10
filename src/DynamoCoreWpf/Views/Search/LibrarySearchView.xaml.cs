@@ -42,6 +42,9 @@ namespace Dynamo.UI.Views
             viewModel.RequestReturnFocusToSearch += OnRequestCloseToolTip;
             // When workspace was changed, we should hide tooltip. 
             viewModel.RequestCloseSearchToolTip += OnRequestCloseToolTip;
+
+            // Show tooltip, when user tries to navigate by keyboard.
+            viewModel.SelectedMemberChanged += ShowSelectedMemberTooltip;
         }
 
         private void OnPreviewMouseMove(object sender, MouseEventArgs e)
@@ -95,6 +98,22 @@ namespace Dynamo.UI.Views
             CloseToolTipInternal();
         }
 
+        private void ShowSelectedMemberTooltip(int categoryIndex, int memberGroupIndex, int memberIndex)
+        {
+            // Wait until tree is rendered.
+            // This is just for the first tree initialization.
+            // Since containers have not initialized yet, we can't find where locate tooltip.
+            CategoryTreeView.ItemContainerGenerator.StatusChanged += (s, args) =>
+                {
+                    var container = s as ItemContainerGenerator;
+                    if (container.Status != GeneratorStatus.ContainersGenerated)
+                        return;
+                    ShowTooltip(GetSelectedMemberByIndexes(categoryIndex, memberGroupIndex, memberIndex));
+                };
+
+            ShowTooltip(GetSelectedMemberByIndexes(categoryIndex, memberGroupIndex, memberIndex));
+        }
+
         private void ShowTooltip(object sender)
         {
             FrameworkElement fromSender = sender as FrameworkElement;
@@ -107,6 +126,7 @@ namespace Dynamo.UI.Views
             {
                 libraryToolTipPopup.PlacementTarget = fromSender;
                 libraryToolTipPopup.SetDataContext(fromSender.DataContext);
+                fromSender.BringIntoView();
             }
         }
 
@@ -118,6 +138,20 @@ namespace Dynamo.UI.Views
         private void OnRequestCloseToolTip(object sender, EventArgs e)
         {
             CloseToolTipInternal(true);
+        }
+
+        private FrameworkElement GetSelectedMemberByIndexes(int categoryIndex, int memberGroupIndex, int memberIndex)
+        {
+            var category = CategoryTreeView.ItemContainerGenerator.ContainerFromIndex(categoryIndex) as TreeViewItem;
+            if (category == null)
+                return null;
+
+            var memberGroup = category.ItemContainerGenerator.ContainerFromIndex(memberGroupIndex) as TreeViewItem;
+            if (memberGroup == null)
+                return null;
+
+            var member = memberGroup.ItemContainerGenerator.ContainerFromIndex(memberIndex) as TreeViewItem;
+            return member;
         }
 
         #endregion

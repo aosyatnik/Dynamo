@@ -52,6 +52,13 @@ namespace Dynamo.ViewModels
                 SearchTextChanged(this, e);
         }
 
+        internal event Action<int, int, int> SelectedMemberChanged;
+        private void OnSelectedMemberChanged()
+        {
+            if (SelectedMemberChanged != null)
+                SelectedMemberChanged(selectedCategoryIndex, selectedMemberGroupIndex, selectedMemberIndex);
+        }
+
         #endregion
 
         #region Properties/Fields
@@ -865,6 +872,7 @@ namespace Dynamo.ViewModels
                 var selectedMember = selectedMemberGroup.Members.ElementAt(selectedMemberIndex);
 
                 selectedMember.IsSelected = true;
+                OnSelectedMemberChanged();
             }
         }
 
