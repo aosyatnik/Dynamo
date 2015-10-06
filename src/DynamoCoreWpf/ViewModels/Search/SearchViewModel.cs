@@ -15,6 +15,7 @@ using Dynamo.UI;
 using Dynamo.Utilities;
 using Dynamo.Wpf.Services;
 using Dynamo.Wpf.ViewModels;
+
 using Microsoft.Practices.Prism.ViewModel;
 using Dynamo.Models;
 
@@ -136,12 +137,62 @@ namespace Dynamo.ViewModels
         }
 
         /// <summary>
-        ///     SearchResults property
+        ///     Items that were found during search.
         /// </summary>
-        /// <value>
-        ///     This property is observed by SearchView to see the search results
-        /// </value>
-        public ObservableCollection<NodeSearchElementViewModel> SearchResults { get; private set; }
+        private List<NodeSearchElementViewModel> searchResults;
+
+        private IEnumerable<NodeSearchElementViewModel> filteredResults;
+        /// <summary>
+        /// Filtered search results.
+        /// </summary>
+        public IEnumerable<NodeSearchElementViewModel> FilteredResults
+        {
+            set
+            {
+                filteredResults = value;
+                RaisePropertyChanged("FilteredResults");
+            }
+            get
+            {
+                return filteredResults;
+            }
+        }
+
+        /// <summary>
+        /// Filters search items, if category was selected.
+        /// </summary>
+        internal void Filter()
+        {
+            var allowedCategories = SearchCategories.Where(cat => cat.IsSelected);
+            FilteredResults = searchResults.Where(x => allowedCategories
+                                                                       .Select(cat => cat.Name)
+                                                                       .Contains(x.Category));
+        }
+
+        public bool IsAnySearchResult
+        {
+            get
+            {
+                return searchResults.Any();
+            }
+        }
+
+        private IEnumerable<SearchCategory> searchCategories;
+        /// <summary>
+        /// Categories that were found after search. Used to filter search results.
+        /// </summary>
+        public IEnumerable<SearchCategory> SearchCategories
+        {
+            get
+            {
+                return searchCategories;
+            }
+            private set
+            {
+                searchCategories = value;
+                RaisePropertyChanged("SearchCategories");
+            }
+        }
 
         private bool searchScrollBarVisibility = true;
         public bool SearchScrollBarVisibility
@@ -193,7 +244,7 @@ namespace Dynamo.ViewModels
 
         private void InitializeCore()
         {
-            SearchResults = new ObservableCollection<NodeSearchElementViewModel>();
+            searchResults = new List<NodeSearchElementViewModel>();
 
             Visible = false;
             searchText = "";
@@ -627,11 +678,19 @@ namespace Dynamo.ViewModels
         internal void SearchAndUpdateResults()
         {
             if (!String.IsNullOrEmpty(SearchText.Trim()))
+            {
                 SearchAndUpdateResults(SearchText);
+            }
+            else // Search text is empty, clear search results.
+            {
+                searchResults.Clear();
+            }
+
+            RaisePropertyChanged("IsAnySearchResult");
         }
 
         /// <summary>
-        ///     Performs a search and updates the observable SearchResults property.
+        ///     Performs a search and updates searchResults.
         /// </summary>
         /// <param name="query"> The search query </param>
         public void SearchAndUpdateResults(string query)
@@ -646,10 +705,37 @@ namespace Dynamo.ViewModels
                 return;
 
             var foundNodes = Search(query);
-            SearchResults = new ObservableCollection<NodeSearchElementViewModel>(foundNodes);
-            RaisePropertyChanged("SearchResults");
+            searchResults = new List<NodeSearchElementViewModel>(foundNodes);
+
+            filteredResults = searchResults;
+            UpdateSearchCategories();
+
+            RaisePropertyChanged("FilteredResults");
         }
 
+        private void UpdateSearchCategories()
+        {
+            var uniqueCategoryNames = searchResults.Select(x => x.Category).Distinct();
+
+            var categories = new List<SearchCategory>();
+            foreach (var name in uniqueCategoryNames)
+            {
+                var searchCategory = new SearchCategory(name);
+                searchCategory.PropertyChanged += IsSelectedChanged;
+                categories.Add(searchCategory);
+            }
+            SearchCategories = categories;
+        }
+
+        private void IsSelectedChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName != "IsSelected")
+            {
+                return;
+            }
+
+            Filter();
+        }
 
         /// <summary>
         ///     Performs a search using the given string as query.
