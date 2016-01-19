@@ -143,8 +143,7 @@
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate TargetType="{x:Type TreeViewItem}">
-                            <Grid x:Name="TreeViewItem"
-                                  Margin="-3,0,0,0">
+                            <Grid x:Name="TreeViewItem">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="Auto" />
@@ -189,9 +188,6 @@
                                     <Setter Property="Visibility"
                                             TargetName="Expander"
                                             Value="Collapsed" />
-                                    <Setter Property="Margin"
-                                            TargetName="TreeViewItem"
-                                            Value="16,0,0,0" />
                                     <Setter Property="Padding"
                                             TargetName="ItemsHostBorder"
                                             Value="0,1,0,1" />
@@ -207,8 +203,9 @@
                                 <MultiDataTrigger>
                                     <MultiDataTrigger.Conditions>
                                         <!-- If treeview item is root item. -->
-                                        <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TreeViewItem}}}"
-                                                   Value="{x:Null}" />
+                                        <Condition Binding="{Binding RelativeSource={RelativeSource PreviousData}, 
+                                                                     Converter={StaticResource NullToBoolConverter}}"
+                                                   Value="False" />
                                         <!-- If root treeview item has child items. -->
                                         <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=HasItems}"
                                                    Value="true" />
@@ -223,8 +220,9 @@
                                 <MultiDataTrigger>
                                     <MultiDataTrigger.Conditions>
                                         <!-- If treeview item is root item. -->
-                                        <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TreeViewItem}}}"
-                                                   Value="{x:Null}" />
+                                        <Condition Binding="{Binding RelativeSource={RelativeSource PreviousData},
+                                                                     Converter={StaticResource NullToBoolConverter}}"
+                                                   Value="False" />
                                         <!-- If root treeview item doesn't have child items. -->
                                         <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=HasItems}"
                                                    Value="false" />
@@ -233,6 +231,23 @@
                                         <Setter Property="Margin"
                                                 TargetName="TreeViewItem"
                                                 Value="0,0,0,0" />
+                                    </MultiDataTrigger.Setters>
+                                </MultiDataTrigger>
+
+                                <MultiDataTrigger>
+                                    <MultiDataTrigger.Conditions>
+                                        <!-- If treeview item is not root item. -->
+                                        <Condition Binding="{Binding RelativeSource={RelativeSource PreviousData},
+                                                                     Converter={StaticResource NullToBoolConverter}}"
+                                                   Value="True" />
+                                        <!-- If root treeview item doesn't have child items. -->
+                                        <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=HasItems}"
+                                                   Value="false" />
+                                    </MultiDataTrigger.Conditions>
+                                    <MultiDataTrigger.Setters>
+                                        <Setter Property="Margin"
+                                                TargetName="TreeViewItem"
+                                                Value="16,0,0,0" />
                                     </MultiDataTrigger.Setters>
                                 </MultiDataTrigger>
                                 <!-- __________________________________________ -->
