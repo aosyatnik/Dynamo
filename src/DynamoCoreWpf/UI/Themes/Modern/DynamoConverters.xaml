@@ -128,8 +128,7 @@
     <controls:InverseBoolToVisibilityConverter x:Key="InverseBoolToVisibilityConverter"/>
     <controls:RunPreviewConverter x:Key="RunPreviewConverter"/>
     <controls:RunPreviewToolTipConverter x:Key="RunPreviewToolTipConverter"/>
-    <controls:MenuItemCheckConverter x:Key="MenuItemCheckConverter"/>
-    <controls:NullToBoolConverter x:Key="NullToBoolConverter" />
+    <controls:MenuItemCheckConverter x:Key="MenuItemCheckConverter"/>    
     <controls:AnnotationTextConverter x:Key="AnnotationTextConverter"/>
     <controls:ViewModeToVisibilityConverter x:Key="ViewModeToVisibilityConverter" />
     <controls:ElementTypeToBoolConverter x:Key="ElementTypeToBoolConverter" />
