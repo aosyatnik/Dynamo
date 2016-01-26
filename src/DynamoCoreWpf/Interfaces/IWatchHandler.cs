@@ -9,6 +9,7 @@ using ProtoCore.DSASM;
 using ProtoCore.Mirror;
 using ProtoCore.Utils;
 using Dynamo.Extensions;
+using Dynamo.Wpf.Properties;
 namespace Dynamo.Interfaces
 {
     /// <summary>
@@ -35,8 +36,6 @@ namespace Dynamo.Interfaces
 
     public class DefaultWatchHandler : IWatchHandler
     {
-        public const string NULL_STRING = "null";
-
         // Formats double value into string. E.g. 1054.32179 => "1054.32179"
         // For more info: https://msdn.microsoft.com/en-us/library/kfsatb94(v=vs.110).aspx
         private const string numberFormat = "g";
@@ -144,7 +143,7 @@ namespace Dynamo.Interfaces
                 // representation instead of casting it as dynamic (that leads to 
                 // a crash).
                 if (data.IsNull)
-                    return new WatchViewModel(NULL_STRING, tag);
+                    return new WatchViewModel(Resources.NullString, tag);
                 
                 //If the input data is an instance of a class, create a watch node
                 //with the class name and let WatchHandler process the underlying CLR data
@@ -163,14 +162,14 @@ namespace Dynamo.Interfaces
         private static string ToString(object obj)
         {
             return ReferenceEquals(obj, null)
-                ? NULL_STRING
+                ? Resources.NullString
                 : (obj is bool ? obj.ToString().ToLower() : obj.ToString());
         }
 
         public WatchViewModel Process(dynamic value, ProtoCore.RuntimeCore runtimeCore, string tag, bool showRawData, WatchHandlerCallback callback)
         {
             return Object.ReferenceEquals(value, null)
-                ? new WatchViewModel(NULL_STRING, tag)
+                ? new WatchViewModel(Resources.NullString, tag)
                 : ProcessThing(value, runtimeCore, tag, showRawData, callback);
         }
     }
