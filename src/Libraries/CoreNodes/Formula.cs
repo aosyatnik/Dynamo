@@ -3,6 +3,13 @@ using NCalc;
 
 namespace DSCore
 {
+    public class DummyClass2
+    {
+        public static int But_Have_To_Call_This(int i)
+        {
+            return i * 2;
+        }
+    }
     /// <summary>
     ///     Backend implementation for Formula node.
     /// </summary>
