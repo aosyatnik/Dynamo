@@ -15,6 +15,8 @@ namespace CoreNodeModels
     [OutPortTypes("int")]
     public class MyTestNode : NodeModel
     {
+        private SomethingImportant I_Want_Process_It = new SomethingImportant();
+
         public MyTestNode()
         {
             RegisterAllPorts();
@@ -23,24 +25,22 @@ namespace CoreNodeModels
         public override IEnumerable<AssociativeNode> BuildOutputAst(List<AssociativeNode> inputAstNodes)
         {
             // This won't work.
-            var functionCall =
-               AstFactory.BuildFunctionCall(new Func<int, int>(I_Want_To_Call_This),
-                   new List<AssociativeNode>() { inputAstNodes[0] });
+            // Ok got it.
+            /*var functionCall =
+               AstFactory.BuildFunctionCall(new Func<int, SomethingImportant>(I_Want_To_Call_This),
+                   new List<AssociativeNode>() { inputAstNodes[0] });*/
 
             // But this will work.
             var functionCall2 =
-               AstFactory.BuildFunctionCall(new Func<int, int>(DummyClass2.But_Have_To_Call_This),
+               AstFactory.BuildFunctionCall(new Func<SomethingImportant, int>(DummyClass2.But_Have_To_Call_This),
+
+               // How to send SomethingImportant (I want to send I_Want_Process_It)?
                    new List<AssociativeNode>() { inputAstNodes[0] });
 
             return new[]
             {
                 AstFactory.BuildAssignment(GetAstIdentifierForOutputIndex(0), /*functionCall*/functionCall2),
             };
-        }
-
-        public static int I_Want_To_Call_This(int i)
-        {
-            return i * 2;
         }
     }
 }

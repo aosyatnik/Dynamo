@@ -3,11 +3,21 @@ using NCalc;
 
 namespace DSCore
 {
+    public class SomethingImportant
+    {
+        public int SomeImportantValue { get; set; }
+
+        public SomethingImportant(int i)
+        {
+            SomeImportantValue = i;
+        }
+    }
+
     public class DummyClass2
     {
-        public static int But_Have_To_Call_This(int i)
+        public static int But_Have_To_Call_This(SomethingImportant something)
         {
-            return i * 2;
+            return something.SomeImportantValue;
         }
     }
     /// <summary>
