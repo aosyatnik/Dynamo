@@ -15,7 +15,7 @@ namespace CoreNodeModels
     [OutPortTypes("int")]
     public class MyTestNode : NodeModel
     {
-        private SomethingImportant I_Want_Process_It = new SomethingImportant();
+        private SomethingImportant I_Want_Process_It = new SomethingImportant(10);
 
         public MyTestNode()
         {
@@ -34,7 +34,8 @@ namespace CoreNodeModels
             var functionCall2 =
                AstFactory.BuildFunctionCall(new Func<SomethingImportant, int>(DummyClass2.But_Have_To_Call_This),
 
-               // How to send SomethingImportant (I want to send I_Want_Process_It)?
+                // How to send SomethingImportant (I want to send I_Want_Process_It)?
+                // I don't want to all AstFactory.BuildIntNode
                    new List<AssociativeNode>() { inputAstNodes[0] });
 
             return new[]
