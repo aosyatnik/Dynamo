@@ -109,7 +109,7 @@ namespace DynamoCoreWpfTests
                 }
             }
 
-            var document = searchViewModel.Model.ComposeXmlForLibrary(ExecutingDirectory);
+            var document = searchViewModel.Model.ComposeXmlForLibrary();
 
             Assert.AreEqual("LibraryTree", document.DocumentElement.Name);
 
