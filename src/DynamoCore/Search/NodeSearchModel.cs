@@ -28,12 +28,12 @@ namespace Dynamo.Search
         ///     Dumps the contents of search into an Xml file.
         /// </summary>
         /// <param name="fileName"></param>
-        internal void DumpLibraryToXml(string fileName, string dynamoPath)
+        internal void DumpLibraryToXml(string fileName)
         {
             if (string.IsNullOrEmpty(fileName))
                 return;
 
-            var document = ComposeXmlForLibrary(dynamoPath);
+            var document = ComposeXmlForLibrary();
             document.Save(fileName);
         }
 
@@ -41,7 +41,7 @@ namespace Dynamo.Search
         ///     Serializes the contents of search into Xml.
         /// </summary>
         /// <returns></returns>
-        internal XmlDocument ComposeXmlForLibrary(string dynamoPath)
+        internal XmlDocument ComposeXmlForLibrary()
         {
             var document = XmlHelper.CreateDocument("LibraryTree");
 
@@ -50,15 +50,15 @@ namespace Dynamo.Search
                 entry => entry.Categories);
 
             foreach (var category in root.SubCategories)
-                AddCategoryToXml(document.DocumentElement, category, dynamoPath);
+                AddCategoryToXml(document.DocumentElement, category);
 
             foreach (var entry in root.Entries)
-                AddEntryToXml(document.DocumentElement, entry, dynamoPath);
+                AddEntryToXml(document.DocumentElement, entry);
 
             return document;
         }
 
-        private static void AddEntryToXml(XmlNode parent, NodeSearchElement entry, string dynamoPath)
+        private static void AddEntryToXml(XmlNode parent, NodeSearchElement entry)
         {
             var element = XmlHelper.AddNode(parent, entry.GetType().ToString());
             XmlHelper.AddNode(element, "FullCategoryName", entry.FullCategoryName);
@@ -128,16 +128,15 @@ namespace Dynamo.Search
 
             var assemblyName = Path.GetFileNameWithoutExtension(entry.Assembly);
 
+            string sourcePath = @"..\..\..\src\Resources\";
             // Get icon paths.
             string pathToSmallIcon = Path.Combine(
-                dynamoPath,
-                @"..\..\..\src\Resources\",
+                sourcePath,
                 assemblyName,
                 "SmallIcons", entry.IconName + ".Small.png");
 
             string pathToLargeIcon = Path.Combine(
-               dynamoPath,
-               @"..\..\..\src\Resources\",
+               sourcePath,
                assemblyName,
                "LargeIcons", entry.IconName + ".Large.png");
 
@@ -145,8 +144,7 @@ namespace Dynamo.Search
             {
                 // Try DynamoCore path.
                 pathToSmallIcon = Path.Combine(
-                    dynamoPath,
-                    @"..\..\..\src\Resources\",
+                    sourcePath,
                     "DynamoCore",
                     "SmallIcons", entry.IconName + ".Small.png");
             }
@@ -155,8 +153,7 @@ namespace Dynamo.Search
             {
                 // Try DynamoCore path.
                 pathToSmallIcon = Path.Combine(
-                    dynamoPath,
-                    @"..\..\..\src\Resources\",
+                    sourcePath,
                     "DynamoCore",
                     "LargeIcons", entry.IconName + ".Large.png");
             }
@@ -167,16 +164,16 @@ namespace Dynamo.Search
         }
 
         private static void AddCategoryToXml(
-            XmlNode parent, ISearchCategory<NodeSearchElement> category, string dynamoPath)
+            XmlNode parent, ISearchCategory<NodeSearchElement> category)
         {
             var element = XmlHelper.AddNode(parent, "Category");
             XmlHelper.AddAttribute(element, "Name", category.Name);
 
             foreach (var subCategory in category.SubCategories)
-                AddCategoryToXml(element, subCategory, dynamoPath);
+                AddCategoryToXml(element, subCategory);
 
             foreach (var entry in category.Entries)
-                AddEntryToXml(element, entry, dynamoPath);
+                AddEntryToXml(element, entry);
         }
 
         /// <summary>
